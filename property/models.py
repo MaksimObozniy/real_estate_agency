@@ -8,6 +8,13 @@ class Flat(models.Model):
     owners_phonenumber = models.CharField('Номер владельца', max_length=20)
     
     new_building = models.BooleanField('Новое здание', null=True, db_index=True)
+    construction_year = models.IntegerField(
+        'Год постройки здания',
+        null=True,
+        blank=True,
+        db_index=True)
+    
+    liked_by = models.ManyToManyField(User, related_name='liked_flats', blank=True, verbose_name='Кто лайкнул')
     
     created_at = models.DateTimeField(
         'Когда создано объявление',
@@ -45,11 +52,6 @@ class Flat(models.Model):
 
     has_balcony = models.BooleanField('Наличие балкона', null=True, db_index=True)
     active = models.BooleanField('Активно-ли объявление', db_index=True)
-    construction_year = models.IntegerField(
-        'Год постройки здания',
-        null=True,
-        blank=True,
-        db_index=True)
     
     
     def __str__(self):
