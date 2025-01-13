@@ -53,3 +53,12 @@ class Flat(models.Model):
     
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
+
+    class New_Flat(models.Model):
+        construction_year = models.IntegerField(
+        'Год постройки здания',
+        null=True,
+        blank=True,
+        db_index=True)
+        
+        new_building = models.BooleanField('Новое здание', null=True, db_index=True)
