@@ -15,8 +15,9 @@ def normalize_phone(apps, schema_editor):
                     flat.owner_pure_phone = phonenumbers.format_number(
                         phone, phonenumbers.PhoneNumberFormat.E164
                     )
-                else:
-                    flat.owner_pure_phone = None
+                    return
+                
+                flat.owner_pure_phone = None
                     
             except phonenumbers.NumberParseException:
                 flat.owner_pure_phone = None
