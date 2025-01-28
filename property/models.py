@@ -7,11 +7,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 class Flat(models.Model):
     owner = models.CharField('ФИО владельца', max_length=200)
 
-    owner_pure_phone = PhoneNumberField(
-        'Нормализованный номер владельца',
-        blank=True,
-        null=True)
-
     new_building = models.BooleanField(
         'Новое здание',
         null=True,
@@ -75,22 +70,6 @@ class Flat(models.Model):
 
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
-
-
-class New_Flat(models.Model):
-    construction_year = models.IntegerField(
-        'Год постройки здания',
-        null=True,
-        blank=True,
-        db_index=True)
-
-    new_building = models.BooleanField(
-        'Новое здание',
-        null=True,
-        db_index=True)
-
-    def __str__(self):
-        return f'{self.name}, {self.phonenumber}'
 
 
 class Owner(models.Model):

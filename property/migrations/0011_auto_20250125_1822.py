@@ -3,12 +3,12 @@ import phonenumbers
 
 
 def normalize_phone(apps, schema_editor):
+
     Flat = apps.get_model('property', 'Flat')
-    flats_to_process = Flat.objects.iterator()
 
-    updates = []
+    for flat in Flat.objects.iterator():  
+        flat.owner_pure_phone = None  
 
-    for flat in flats_to_process:
         if flat.owners_phonenumber:
             try:
                 phone = phonenumbers.parse(flat.owners_phonenumber, 'RU')
@@ -17,14 +17,11 @@ def normalize_phone(apps, schema_editor):
                     flat.owner_pure_phone = phonenumbers.format_number(
                         phone, phonenumbers.PhoneNumberFormat.E164
                     )
-                    return
-                
-                flat.owner_pure_phone = None
-                    
+
             except phonenumbers.NumberParseException:
-                flat.owner_pure_phone = None
-            
-            updates.append(flat)
+                flat.owner_pure_phone = None 
+
+        flat.save()
             
 class Migration(migrations.Migration):
 
