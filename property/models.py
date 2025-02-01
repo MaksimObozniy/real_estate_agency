@@ -85,9 +85,10 @@ class Owner(models.Model):
         blank=True,
         null=True)
 
-    owned_flats = models.ManyToManyField(
+    
+    property = models.ManyToManyField(
         Flat,
-        related_name='owners',
+        related_name='property',
         blank=True,
         verbose_name='Квартиры в собственности')
 
