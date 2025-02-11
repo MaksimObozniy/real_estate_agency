@@ -86,6 +86,8 @@ class Owner(models.Model):
         verbose_name="Квартиры в собственности",
         blank=True
         )
+    def __str__(self):
+        return self.full_name
 
 class Complaint(models.Model):
     user = models.ForeignKey(
