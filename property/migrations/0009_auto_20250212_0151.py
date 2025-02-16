@@ -6,19 +6,23 @@ import phonenumbers
 
 def normalize_phone_numbers(apps, schema_editor):
     Flat = apps.get_model("property", "Flat")
-    
-    for flat in Flat.objects.iterator():
-        if flat.owners_phonenumber:
-            try:
-                parsed_number = phonenumbers.parse(flat.owners_phonenumber, "RU")
-                if phonenumbers.is_valid_number(parsed_number):
-                    flat.owner_pure_phone = phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.E164)
-                else:
-                    flat.owner_pure_phone = None
-                flat.save(update_fields=["owner_pure_phone"])
-            except:
-                pass
 
+    for flat in Flat.objects.iterator():
+        if not flat.owners_phonenumber:
+            continue
+
+        try:
+            parsed_number = phonenumbers.parse(flat.owners_phonenumber, "RU")
+            if not phonenumbers.is_valid_number(parsed_number):
+                flat.owner_pure_phone = None
+                flat.save(update_fields=["owner_pure_phone"])
+                continue
+
+            flat.owner_pure_phone = phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.E164)
+            flat.save(update_fields=["owner_pure_phone"])
+
+        except phonenumbers.NumberParseException as e:
+            print(f"Ошибка обработки номера {flat.owners_phonenumber}: {e}")
 
 class Migration(migrations.Migration):
 
